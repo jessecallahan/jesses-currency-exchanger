@@ -10,8 +10,9 @@ function clearFields() {
 }
 
 function exchangeLogic(input, exchangeResponse) {
+  input = parseInt(input)
   var exchangeRateList = {
-    USD: parseInt(input),
+    USD: input,
     MXN: `$ ${(input * exchangeResponse.conversion_rates.MXN).toFixed(2)}`,
     JPY: `¥ ${(input * exchangeResponse.conversion_rates.JPY).toFixed(2)}`,
     CAD: `$ ${(input * exchangeResponse.conversion_rates.CAD).toFixed(2)}`,
@@ -21,8 +22,6 @@ function exchangeLogic(input, exchangeResponse) {
   };
   return exchangeRateList;
 }
-
-
 
 function displayRate(exchange) {
   $(".mxn-response").text(exchange.MXN);
@@ -43,20 +42,24 @@ $(document).ready(function () {
     $("#showHideMagic").show();
     clearFields();
 
-    ExchangeRateService.getExchangeRate()
-      .then(function (exchangeResponse) {
-        if (exchangeResponse instanceof Error) {
-          throw Error(`exchange API error: ${exchangeResponse.message}`);
-        }
-        console.log(exchangeResponse.conversion_rates);
-        let logic = exchangeLogic(input, exchangeResponse);
-        displayRate(logic);
+    if (isNaN(input)) {
+      $('.show-errors').text("This is not a recognized number, try typing in digits!");
+      $('#showHideMagic').hide();
+    } else {
+      ExchangeRateService.getExchangeRate()
+        .then(function (exchangeResponse) {
+          if (exchangeResponse instanceof Error) {
+            throw Error(`exchange API error: ${exchangeResponse.message}`);
+          }
+          console.log(exchangeResponse.conversion_rates);
+          let logic = exchangeLogic(input, exchangeResponse);
+          displayRate(logic);
 
 
-      })
-      .catch(function (error) {
-        displayErrors(error.message);
-      });
-
+        })
+        .catch(function (error) {
+          displayErrors(error.message);
+        });
+    }
   });
 });
