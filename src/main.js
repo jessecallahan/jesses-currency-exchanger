@@ -54,8 +54,6 @@ $(document).ready(function () {
           console.log(exchangeResponse.conversion_rates);
           let logic = exchangeLogic(input, exchangeResponse);
           displayRate(logic);
-
-
         })
         .catch(function (error) {
           displayErrors(error.message);
