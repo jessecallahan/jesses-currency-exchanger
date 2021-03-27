@@ -2,7 +2,7 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
-import ExchangeRateService from './services/player-lookup-service.js';
+import ExchangeRateService from './services/exchange-rate-lookup-service.js';
 
 function clearFields() {
   $('#playerName').val("");
@@ -10,8 +10,17 @@ function clearFields() {
 }
 
 function exchangeLogic(input, exchangeResponse) {
-
+  parseInt(input)
+  var exchangeRateList = {
+    USD: parseInt(input),
+    MXN: input * exchangeResponse.conversion_rates.MXN,
+    JPY: input * exchangeResponse.conversion_rates.JPY
+  }
+  console.log(exchangeRateList)
+  return exchangeRateList
 }
+
+
 
 function displayRate(exchange) {
   console.log(exchange)
@@ -31,8 +40,8 @@ $(document).ready(function () {
         if (exchangeResponse instanceof Error) {
           throw Error(`exchange API error: ${exchangeResponse.message}`);
         }
-        exchangeLogic(input, exchangeResponse);
-        displayRate(exchangeResponse);
+        let logic = exchangeLogic(input, exchangeResponse);
+        displayRate(logic);
 
 
       })
