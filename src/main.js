@@ -10,13 +10,11 @@ function clearFields() {
 }
 
 function exchangeLogic(input, exchangeResponse) {
-  parseInt(input)
   var exchangeRateList = {
     USD: parseInt(input),
     MXN: input * exchangeResponse.conversion_rates.MXN,
     JPY: input * exchangeResponse.conversion_rates.JPY
   }
-  console.log(exchangeRateList)
   return exchangeRateList
 }
 
@@ -24,6 +22,8 @@ function exchangeLogic(input, exchangeResponse) {
 
 function displayRate(exchange) {
   console.log(exchange)
+  $(".mxn-response").text(exchange.MXN)
+  $(".jpn-response").text(exchange.JPY)
 }
 
 function displayErrors(error) {
