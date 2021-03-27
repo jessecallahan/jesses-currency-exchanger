@@ -5,25 +5,32 @@ import './css/styles.css';
 import ExchangeRateService from './services/exchange-rate-lookup-service.js';
 
 function clearFields() {
-  $('#playerName').val("");
+  $('#numberInput').val("");
   $('.show-errors').text("");
 }
 
 function exchangeLogic(input, exchangeResponse) {
   var exchangeRateList = {
     USD: parseInt(input),
-    MXN: input * exchangeResponse.conversion_rates.MXN,
-    JPY: input * exchangeResponse.conversion_rates.JPY
-  }
-  return exchangeRateList
+    MXN: `$ ${(input * exchangeResponse.conversion_rates.MXN).toFixed(2)}`,
+    JPY: `¥ ${(input * exchangeResponse.conversion_rates.JPY).toFixed(2)}`,
+    CAD: `$ ${(input * exchangeResponse.conversion_rates.CAD).toFixed(2)}`,
+    EUR: `€ ${(input * exchangeResponse.conversion_rates.EUR).toFixed(2)}`,
+    INR: `₹ ${(input * exchangeResponse.conversion_rates.INR).toFixed(2)}`,
+    KRW: `₩ ${(input * exchangeResponse.conversion_rates.KRW).toFixed(2)}`,
+  };
+  return exchangeRateList;
 }
 
 
 
 function displayRate(exchange) {
-  console.log(exchange)
-  $(".mxn-response").text(exchange.MXN)
-  $(".jpn-response").text(exchange.JPY)
+  $(".mxn-response").text(exchange.MXN);
+  $(".jpn-response").text(exchange.JPY);
+  $(".cad-response").text(exchange.CAD);
+  $(".eur-response").text(exchange.EUR);
+  $(".inr-response").text(exchange.INR);
+  $(".krw-response").text(exchange.KRW);
 }
 
 function displayErrors(error) {
@@ -33,6 +40,7 @@ function displayErrors(error) {
 $(document).ready(function () {
   $('#exchangeButton').click(function () {
     let input = $('#numberInput').val();
+    $("#showHideMagic").show();
     clearFields();
 
     ExchangeRateService.getExchangeRate()
@@ -40,6 +48,7 @@ $(document).ready(function () {
         if (exchangeResponse instanceof Error) {
           throw Error(`exchange API error: ${exchangeResponse.message}`);
         }
+        console.log(exchangeResponse.conversion_rates);
         let logic = exchangeLogic(input, exchangeResponse);
         displayRate(logic);
 
