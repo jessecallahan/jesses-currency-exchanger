@@ -32,8 +32,30 @@ function displayRate(exchange) {
   $(".krw-response").text(exchange.KRW);
 }
 
-function displayErrors(error) {
+function extraLogic(input, input2, exchangeResponse) {
+  input2 = input2.toUpperCase();
+  for (const [key, value] of Object.entries(exchangeResponse)) {
+    if (input2 === key) {
+      return (value * input).toFixed(2)
+    }
+  }
+}
+
+function displayExtra(value, input, input2) {
+  if (isNaN(value)) {
+    $(".show-extra").text(`${input2.toUpperCase()} is not a recognized country code, please try again.`)
+  } else {
+    $(".show-extra").text(`$${input} is ${value} in ${input2.toUpperCase()}`)
+  }
+}
+
+function displayApiErrors(error) {
   $('.show-errors').text(`${error}`);
+}
+
+function displayUIerrors() {
+  $('.show-errors').text("This is not a recognized number, try typing in digits!");
+  $('#showHideMagic').hide();
 }
 
 $(document).ready(function () {
@@ -43,20 +65,28 @@ $(document).ready(function () {
     clearFields();
 
     if (isNaN(input)) {
-      $('.show-errors').text("This is not a recognized number, try typing in digits!");
-      $('#showHideMagic').hide();
+      displayUIerrors()
     } else {
       ExchangeRateService.getExchangeRate()
         .then(function (exchangeResponse) {
           if (exchangeResponse instanceof Error) {
             throw Error(`exchange API error: ${exchangeResponse.message}`);
           }
-          console.log(exchangeResponse.conversion_rates);
-          let logic = exchangeLogic(input, exchangeResponse);
-          displayRate(logic);
+
+          //displays 6 common currencies
+          let orginalExchangeLogic = exchangeLogic(input, exchangeResponse);
+          displayRate(orginalExchangeLogic);
+
+          //extra currency logic
+          $('#extraButton').click(function () {
+            let input2 = $('#letterInput').val();
+            let extraExchangeValue = extraLogic(input, input2, exchangeResponse.conversion_rates)
+            displayExtra(extraExchangeValue, input, input2)
+          });
+
         })
         .catch(function (error) {
-          displayErrors(error.message);
+          displayApiErrors(error.message);
         });
     }
   });

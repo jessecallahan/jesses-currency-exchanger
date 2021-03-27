@@ -1,8 +1,17 @@
 body {
-  background-color: lightblue;
+  background-color: rgb(255, 255, 165);
 }
 
 #showHideMagic {
  display:none;
+}
+
+.card {
+  width: 12rem;
+  height: 13rem;
+}
+
+.card-img-top{
+  height: 7rem;
 }
 
