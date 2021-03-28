@@ -1,21 +1,27 @@
 # Jesse's Currency Exchanger
 
-Created 03.20.20</br>
+Created 03.27.21</br>
 By _**Jesse Callahan**_</br>
 Contact: _**Jessetylercallahan@gmail.com**_</br>
 
 ## Description
-This project calculates the exchange rate from US dollars to six common currencies. It also allows you to calculate your currency based on three digit country code.
+
+This project calculates the exchange rate from US dollars to six common currencies. It also allows you to calculate currency based on a three digit country code.
 
 ## Setup/Installation Requirements
-1. Click the [link] (https://jessecallahan.github.io/city-tracker/) 
-2. Enjoy
+
+1. Clone the repo 
+2. Run 'npm install' in directory folder
+3. Run 'npm run start' 
+4. Enjoy!
 
 ## Specs
 
-One API call:
+Behaviors:
 
-1) Currency Exchange Api - one call to the db to get 'city_entity' value for better search results, call two searching restaurant recommendations with that value.
+1) One API call: Currency Exchange Api - this endpoint gives the price of each currency in the world to one dollar.
+2) Takes user input and multiplies it by 6 common currency rates: Japan, Mexico, Canada, European Euro, India, and South Korea.
+3) Takes another input, a 3 letter code, loops through each key value pair of the list of currencies from the API and trys to match country codes. If the country code is found, the application then multiplies the original input by the rate of the country code given and returns that answer. 
 
 ## Bugs
 
