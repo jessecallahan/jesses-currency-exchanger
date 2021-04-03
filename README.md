@@ -12,7 +12,7 @@ This project calculates the exchange rate from US dollars to six common currenci
 
 1. Clone the repo 
 2. Create a new file called '.env' inside the directory. This is where we'll hide our api key.
-2. Visit https://www.exchangerate-api.com/(https://www.exchangerate-api.com/)
+2. Visit https://www.exchangerate-api.com/
 3. Click 'get you free api key' on the api website, sign up, and save that api key.
 4. Take that api key and write it in the top of the .env file as: API_KEY=your api key here. This should hide your API key.
 5. In your terminal, go to the top of the directory and 'npm install'
